@@ -1,34 +1,50 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { v4 as uuidv4 } from 'uuid'
 import './App.css'
+import AddTodo from './components/AddTodo'
+import TodoList from './components/TodoList'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todos, setTodos] = useState([    
+    {id: 1, text: '学习React', completed: false},
+    {id: 2, text: '构建ToDo应用', completed: true},
+  ])
+
+  // 添加待办事项
+  const addTodo = (text) => {
+    const newTodo = {
+      id: uuidv4(),
+      text,
+      completed: false,
+    }
+    setTodos([...todos, newTodo])
+  }
+
+  // 删除待办事项
+  const deleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id))
+  }
+
+  // 切换待办事项状态
+  const toggleComplete = (id) => {
+    setTodos(todos.map(todo => {
+      if (todo.id === id) {
+        todo.completed = !todo.completed
+      }
+      return todo
+    }))
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className="app-container">
+      <h1>ToDo List</h1>
+      <AddTodo onAdd={addTodo} />
+      <TodoList 
+        todos={todos} 
+        onDelete={deleteTodo} 
+        onToggle={toggleComplete} 
+      />
+    </div>
   )
 }
 
