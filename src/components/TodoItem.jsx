@@ -16,4 +16,4 @@ const TodoItem = ({ todo, onDelete, onToggle }) => {
   )
 }
 
-export default TodoItem
+export default TodoItems
