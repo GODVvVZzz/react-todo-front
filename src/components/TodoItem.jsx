@@ -8,7 +8,7 @@ const TodoItem = ({ todo, onDelete, onToggle }) => {
         <span className='todo-text'>{todo.text}</span>
       </div>
      
-      <FiTrash2 className='delete-icon' 
+      <FiTrash2 
       className='delete-icon' 
       onClick={() => onDelete(todo.id)}
       />
@@ -16,4 +16,4 @@ const TodoItem = ({ todo, onDelete, onToggle }) => {
   )
 }
 
-export default TodoItems
+export default TodoItem
