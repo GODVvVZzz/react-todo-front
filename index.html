@@ -1,13 +1,27 @@
-<!doctype html>
-<html lang="en">
+<!doctype html> <!-- HTML5 文档声明 -->
+<html lang="en"> <!-- 根元素，设置语言为英语 -->
   <head>
+    <!-- 字符编码设置 -->
     <meta charset="UTF-8" />
+    <!-- 网站图标（Vite 默认图标，建议替换为自己的favicon） -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <!-- 移动端适配关键设置 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 网页标题（会显示在浏览器标签页） -->
     <title>Vite + React</title>
   </head>
   <body>
+     <!-- React 应用挂载点 -->
     <div id="root"></div>
+    <!-- 入口脚本（启动React应用的关键） -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+
+<!-- 
+总体流程：
+浏览器加载 index.html
+解析到 <script> 标签后加载 /src/main.jsx
+main.jsx 执行 React 的渲染逻辑
+React 组件树被渲染到 id="root" 的 div 中
+-->
