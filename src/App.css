@@ -1,97 +1,91 @@
-/* 基础样式 */
+/* src/App.css */
 .app-container {
   max-width: 600px;
   margin: 2rem auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h1 {
-  color: #2c3e50;
+.date-picker-wrapper {
+  margin: 1rem 0;
   text-align: center;
-  margin-bottom: 2rem;
 }
 
-/* 添加表单样式 */
+.date-picker {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+  font-style: italic;
+}
+
+/* 保持原有样式，增加以下新样式 */
 .add-form {
   display: flex;
-  gap: 10px;
-  margin-bottom: 2rem;
-}
-
-.add-form input {
-  flex: 1;
-  padding: 12px;
-  border: 2px solid #bdc3c7;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-.add-form input:focus {
-  outline: none;
-  border-color: #3498db;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .add-button {
-  background: #3498db;
+  background: none;
   border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  color: white;
   cursor: pointer;
-  transition: background 0.3s;
-}
-
-.add-button:hover {
-  background: #2980b9;
-}
-
-/* 待办列表样式 */
-.todo-list {
-  list-style: none;
+  color: #4CAF50;
   padding: 0;
-  margin: 0;
+}
+
+.add-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .todo-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  margin: 10px 0;
-  background: #f8f9fa;
-  border-radius: 8px;
+  padding: 0.8rem;
+  background: #fff;
+  border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 0.5rem;
 }
 
-.todo-item.completed {
-  opacity: 0.6;
-  background: #ecf0f1;
-}
-
-.item-content {
+.todo-content {
+  flex-grow: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
   cursor: pointer;
 }
 
 .check-icon {
-  color: #27ae60;
-  min-width: 24px;
-}
-
-.todo-text {
-  flex: 1;
+  color: #4CAF50;
 }
 
 .delete-icon {
-  color: #e74c3c;
+  color: #f44336;
   cursor: pointer;
-  padding: 8px;
-  transition: color 0.3s;
+  padding: 5px;
 }
 
 .delete-icon:hover {
-  color: #c0392b;
+  background: #ffe5e5;
+  border-radius: 50%;
+}
+
+.completed .todo-text {
+  color: #888;
+  text-decoration: line-through;
 }

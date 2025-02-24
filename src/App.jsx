@@ -1,72 +1,103 @@
-import { useState } from 'react' // react的状态钩子
-import { v4 as uuidv4 } from 'uuid' // 生成唯一id的库
-import './App.css' // 组件样式
-import AddTodo from './components/AddTodo' // 添加待办组件
-import TodoList from './components/TodoList' // 待办列表组件
+// src/App.jsx
+import { useState, useEffect } from 'react'
+import { format, parseISO } from 'date-fns'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import './App.css'
+import AddTodo from './components/AddTodo'
+import TodoList from './components/TodoList'
 
 function App() {
-  /**
-   * 
-    todos：存储所有待办事项的数组（应用的"记忆盒子"）
+  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [todos, setTodos] = useState([])
+  const [loading, setLoading] = useState(false)
 
-    setTodos：更新状态的唯一方式（就像修改记忆的魔法笔）
+  // 日期格式化工具
+  const formatDate = (date) => format(date, 'yyyy-MM-dd')
 
-    初始数据：两个示例待办事项（方便开发调试）
-   */
-  const [todos, setTodos] = useState([    
-    {id: 1, text: '学习React', completed: false},
-    {id: 2, text: '构建ToDo应用', completed: true},
-  ])
+  // 获取待办事项
+  const fetchTodos = async (date) => {
+    try {
+      setLoading(true)
+      const res = await fetch(`/api/todos?date=${formatDate(date)}`)
+      const data = await res.json()
+      setTodos(data.data)
+    } catch (error) {
+      console.error('获取数据失败:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // 日期变化时重新获取数据
+  useEffect(() => {
+    fetchTodos(selectedDate)
+  }, [selectedDate])
 
   // 添加待办事项
-  const addTodo = (text) => {
-    const newTodo = {
-      id: uuidv4(), //生成唯一id
-      text, // 事项内容(ES6简写  什么是es6？)
-      completed: false,
+  const handleAdd = async (text) => {
+    try {
+      const res = await fetch('/api/todos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text,
+          date: formatDate(selectedDate)
+        })
+      })
+      if (res.ok) fetchTodos(selectedDate)
+    } catch (error) {
+      console.error('添加失败:', error)
     }
-    setTodos([...todos, newTodo])
   }
 
-  // 删除待办事项
-  const deleteTodo = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id))
+  // 删除事项
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`/api/todos/${id}`, { method: 'DELETE' })
+      if (res.ok) fetchTodos(selectedDate)
+    } catch (error) {
+      console.error('删除失败:', error)
+    }
   }
 
-  // 切换待办事项状态
-  const toggleComplete = (id) => {
-    setTodos(todos.map(todo => {
-      if (todo.id === id) {
-        todo.completed = !todo.completed
-      }
-      return todo
-    }))
+  // 切换完成状态
+  const handleToggle = async (id, completed) => {
+    try {
+      const res = await fetch(`/api/todos/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed: !completed })
+      })
+      if (res.ok) fetchTodos(selectedDate)
+    } catch (error) {
+      console.error('更新失败:', error)
+    }
   }
 
-  /**
-   * 
-  组件树结构：
-App
-├── AddTodo（输入框+添加按钮）
-└── TodoList（列表容器）
-    └── TodoItem（单个待办事项） × N
-
-用户操作 → 子组件触发事件 → 调用父组件函数 → 更新状态 → 重新渲染
-
-Props传递：
-onAdd：接收子组件提交的新事项文本
-todos：传递数据给列表组件
-onDelete 和 onToggle：传递操作函数给子组件
-   */
   return (
     <div className="app-container">
-      <h1>ToDo List</h1>
-      <AddTodo onAdd={addTodo} />
-      <TodoList 
-        todos={todos} 
-        onDelete={deleteTodo} 
-        onToggle={toggleComplete} 
-      />
+      <h1>每日待办清单</h1>
+      <div className="date-picker-wrapper">
+        <DatePicker
+          selected={selectedDate}
+          onChange={date => setSelectedDate(date)}
+          dateFormat="yyyy-MM-dd"
+          className="date-picker"
+        />
+      </div>
+      
+      <AddTodo onAdd={handleAdd} />
+      
+      {loading ? (
+        <div className="loading">加载中...</div>
+      ) : (
+        <TodoList 
+          todos={todos} 
+          onDelete={handleDelete} 
+          onToggle={handleToggle} 
+        />
+      )}
     </div>
   )
 }
