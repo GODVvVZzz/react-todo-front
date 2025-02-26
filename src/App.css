@@ -10,6 +10,12 @@
   color: #333;
 }
 
+/* 新增 h1 标题居中 */
+.app-container h1 {
+  text-align: center;
+  margin-bottom: 1rem; /* 可选：增加底部间距 */
+}
+
 .date-picker-wrapper {
   margin: 1rem 0;
   text-align: center;

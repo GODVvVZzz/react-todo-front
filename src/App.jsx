@@ -77,7 +77,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1>每日待办清单</h1>
+      <h1>ToDoList</h1>
       <div className="date-picker-wrapper">
         <DatePicker
           selected={selectedDate}
